@@ -1,30 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Calculator, Building2 } from "lucide-react";
+import { ArrowRight, Calculator, Building2, ClipboardCheck, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedWords from "./AnimatedWords";
 import { Image } from "@/components/ui/image";
 
-const HERO_IMG = "https://media.base44.com/images/public/6aa9b4a2cbd2193708bea50f/16c56a1bc_generated_ad5ea5b3.jpg";
+const SOLAR_IMAGES = [
+  { src: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=2200&q=90", alt: "Solar panels catching the morning light" },
+  { src: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=2200&q=90", alt: "Solar array viewed across a field" },
+  { src: "https://images.unsplash.com/photo-1545208942-e7c8f6c7f5d9?auto=format&fit=crop&w=2200&q=90", alt: "Close view of photovoltaic panels" },
+];
 
-export default function Hero() {
-  const [offset, setOffset] = useState(0);
+export default function Hero({ onOpenRequest }) {
+  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setOffset(window.scrollY * 0.25);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const timer = window.setInterval(() => setActiveImage((image) => (image + 1) % SOLAR_IMAGES.length), 7000);
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
     <section id="top" className="relative min-h-screen flex items-center overflow-hidden bg-obsidian">
-      <div className="absolute inset-0" style={{ transform: `translateY(${offset}px)` }}>
-        <Image
-          src={HERO_IMG}
-          alt="Vast solar panel array at dawn with amber sky"
-          className="w-full h-[120%]"
-          fittingType="fill"
-        />
+      <div className="absolute inset-0" aria-label="Solar project highlights">
+        {SOLAR_IMAGES.map((image, index) => (
+          <motion.div
+            key={image.src}
+            initial={false}
+            animate={{
+              opacity: index === activeImage ? [0, 1, 1, 0] : 0,
+              scale: index === activeImage ? [1.06, 1, 1.02, 1.06] : 1.06,
+              x: index === activeImage ? ["-3%", "0%", "1%", "3%"] : "-3%",
+            }}
+            transition={{ duration: 7, times: [0, 0.18, 0.82, 1], ease: "easeInOut" }}
+            className="absolute inset-0 h-full w-full"
+          >
+            <Image src={image.src} alt={image.alt} className="h-full w-full" fittingType="fill" />
+          </motion.div>
+        ))}
       </div>
       <div className="absolute inset-0 bg-gradient-to-b from-obsidian/60 via-obsidian/70 to-obsidian" />
       <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/40 to-transparent" />
@@ -72,6 +84,11 @@ export default function Hero() {
             <a href="#government"><Building2 className="w-4 h-4 mr-2" /> Corporate / Government</a>
           </Button>
         </motion.div>
+
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-widest text-silver/50">
+          <button type="button" onClick={() => onOpenRequest("assessment")} className="inline-flex items-center gap-2 hover:text-plasma transition-colors"><ClipboardCheck className="h-4 w-4 text-plasma" /> On-site assessment</button>
+          <button type="button" onClick={() => onOpenRequest("installer")} className="inline-flex items-center gap-2 hover:text-plasma transition-colors"><Wrench className="h-4 w-4 text-plasma" /> Find an installer</button>
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}

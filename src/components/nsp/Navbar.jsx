@@ -4,15 +4,18 @@ import { Button } from "@/components/ui/button";
 
 const LINKS = [
   { label: "Solutions", href: "#solutions" },
+  // { label: "Efficiency", href: "#energy-management" },
+  // { label: "Maintenance", href: "#maintenance" },
+  // { label: "Products", href: "#products" },
   { label: "Consulting", href: "#consulting" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Process", href: "#process" },
+  // { label: "Process", href: "#process" },
   { label: "Projects", href: "#projects" },
   { label: "Government", href: "#government" },
   { label: "FAQ", href: "#faq" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onOpenRequest }) {
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -51,7 +54,7 @@ export default function Navbar() {
 
           <div className="hidden lg:block">
             <Button asChild className="relative overflow-hidden shine-sweep bg-plasma text-obsidian hover:bg-plasma/90 font-semibold uppercase tracking-wide">
-              <a href="#quote">Get My Energy Plan</a>
+              <a href="#quote">Get Quote</a>
             </Button>
           </div>
 
@@ -70,6 +73,7 @@ export default function Navbar() {
             <Button asChild className="bg-plasma text-obsidian font-semibold uppercase w-full">
               <a href="#quote" onClick={() => setOpen(false)}>Get My Energy Plan</a>
             </Button>
+            <button type="button" onClick={() => { setOpen(false); onOpenRequest("installer"); }} className="text-left text-sm uppercase tracking-widest text-silver/70">Request an installer</button>
           </div>
         )}
       </nav>

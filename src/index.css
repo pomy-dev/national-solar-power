@@ -131,6 +131,25 @@
     background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.5), transparent);
     height: 1px;
   }
+
+  .solar-image-reveal {
+    animation: solar-image-reveal 7s ease-in-out infinite;
+  }
+
+  @keyframes solar-image-reveal {
+
+    0%,
+    100% {
+      opacity: 0;
+      transform: translate(-22%, -50%) scale(.96);
+    }
+
+    18%,
+    82% {
+      opacity: .85;
+      transform: translate(0, -50%) scale(1);
+    }
+  }
 }
 
 html {
