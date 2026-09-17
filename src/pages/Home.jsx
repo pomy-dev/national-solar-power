@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Navbar from "@/components/nsp/Navbar";
 import Hero from "@/components/nsp/Hero";
 import SectorSelector from "@/components/nsp/SectorSelector";

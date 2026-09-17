@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Sun, Menu, X } from "lucide-react";
+import { Sun, Menu, X, ChevronDown } from "lucide-react";
 
 const LINKS = [
   { label: "Solutions", href: "#solutions" },
@@ -11,6 +11,13 @@ const LINKS = [
   // { label: "Process", href: "#process" },
   { label: "Projects", href: "#projects" },
   { label: "Government", href: "#government" },
+];
+
+const MORE_LINKS = [
+  { label: "Efficiency", href: "#energy-management" },
+  { label: "Maintenance", href: "#maintenance" },
+  { label: "Products", href: "#products" },
+  { label: "Process", href: "#process" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -21,12 +28,19 @@ export default function Navbar({ onOpenRequest }) {
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
   const [quoteMenuOpen, setQuoteMenuOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
 
   /** @param {string} type */
   const openRequest = (type) => {
     setOpen(false);
     setQuoteMenuOpen(false);
     onOpenRequest(type);
+  };
+
+  const scrollToCtaQuote = () => {
+    setOpen(false);
+    setQuoteMenuOpen(false);
+    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -60,6 +74,31 @@ export default function Navbar({ onOpenRequest }) {
                 {l.label}
               </a>
             ))}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMoreMenuOpen((value) => !value)}
+                className="flex items-center gap-1 text-sm uppercase tracking-widest text-silver/70 hover:text-plasma transition-colors"
+                aria-expanded={moreMenuOpen}
+              >
+                More
+                <ChevronDown className={`h-4 w-4 transition-transform ${moreMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+              {moreMenuOpen && (
+                <div className="absolute right-0 top-full mt-4 w-56 border border-white/10 bg-obsidian/95 p-2 shadow-xl">
+                  {MORE_LINKS.map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setMoreMenuOpen(false)}
+                      className="block px-3 py-3 text-xs uppercase tracking-widest text-silver/80 transition-colors hover:bg-white/10 hover:text-plasma"
+                    >
+                      {l.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="group relative hidden lg:block">
@@ -75,7 +114,7 @@ export default function Navbar({ onOpenRequest }) {
                 <button
                   key={type}
                   type="button"
-                  onClick={() => openRequest(type)}
+                  onClick={() => type === "quote" ? scrollToCtaQuote() : openRequest(type)}
                   className="block w-full px-3 py-3 text-left text-xs uppercase tracking-widest text-silver/80 transition-colors hover:bg-white/10 hover:text-plasma"
                 >
                   {label}
@@ -98,6 +137,24 @@ export default function Navbar({ onOpenRequest }) {
             ))}
             <button
               type="button"
+              onClick={() => setMoreMenuOpen((value) => !value)}
+              className="flex w-full items-center justify-between text-left text-silver/80 uppercase text-sm tracking-widest"
+              aria-expanded={moreMenuOpen}
+            >
+              More
+              <ChevronDown className={`h-4 w-4 transition-transform ${moreMenuOpen ? "rotate-180" : ""}`} />
+            </button>
+            {moreMenuOpen && (
+              <div className="flex flex-col gap-4 border-l border-plasma/40 pl-4">
+                {MORE_LINKS.map((l) => (
+                  <a key={l.href} href={l.href} onClick={() => { setOpen(false); setMoreMenuOpen(false); }} className="text-silver/70 uppercase text-sm tracking-widest hover:text-plasma">
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            )}
+            <button
+              type="button"
               onClick={() => setQuoteMenuOpen((value) => !value)}
               className="w-full bg-plasma px-4 py-2 text-left text-sm font-semibold uppercase tracking-wide text-obsidian"
             >
@@ -113,7 +170,7 @@ export default function Navbar({ onOpenRequest }) {
                   <button
                     key={type}
                     type="button"
-                    onClick={() => openRequest(type)}
+                    onClick={() => type === "quote" ? scrollToCtaQuote() : openRequest(type)}
                     className="text-left text-sm uppercase tracking-widest text-silver/70 hover:text-plasma"
                   >
                     {label}

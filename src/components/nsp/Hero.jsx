@@ -8,7 +8,7 @@ import { Image } from "@/components/ui/image";
 const SOLAR_IMAGES = [
   { src: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=2200&q=90", alt: "Solar panels catching the morning light" },
   { src: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=2200&q=90", alt: "Solar array viewed across a field" },
-  { src: "https://images.unsplash.com/photo-1545208942-e7c8f6c7f5d9?auto=format&fit=crop&w=2200&q=90", alt: "Close view of photovoltaic panels" },
+  { src: "https://media.istockphoto.com/id/2212331081/photo/workers-are-installing-awning-solar-panels.webp?a=1&b=1&s=612x612&w=0&k=20&c=EMvsRWjouEXw-1Vb2pIvXXnoJLOR-ivuepDwAjZu8Jw=", alt: "Close view of photovoltaic panels" },
 ];
 
 export default function Hero({ onOpenRequest }) {
