@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function RequestModal({ open, onOpenChange, type = "assessment" }) {
   const isInstaller = type === "installer";
+  const requestLabel = type === "quote" ? "quote" : isInstaller ? "solar installer" : "on-site assessment";
+  const requestTitle = type === "quote" ? "Request a quote" : isInstaller ? "Request a solar installer" : "Book an on-site assessment";
   const [form, setForm] = useState({ name: "", email: "", phone: "", location: "", site: "", notes: "" });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -20,8 +22,8 @@ export default function RequestModal({ open, onOpenChange, type = "assessment" }
     setSubmitting(true);
     await base44.integrations.Core.SendEmail({
       to: form.email || "leads@nationalsolarpower.co.za",
-      subject: `New ${isInstaller ? "solar installer" : "on-site assessment"} request`,
-      body: `${isInstaller ? "Installer" : "Assessment"} request\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nLocation: ${form.location}\nSite: ${form.site}\nNotes: ${form.notes}`,
+      subject: `New ${requestLabel} request`,
+      body: `${requestTitle}\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nLocation: ${form.location}\nSite: ${form.site}\nNotes: ${form.notes}`,
     }).catch(() => { });
     setSubmitting(false);
     setDone(true);
@@ -44,7 +46,7 @@ export default function RequestModal({ open, onOpenChange, type = "assessment" }
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle className="font-heading text-2xl text-silver">{isInstaller ? "Request a solar installer" : "Book an on-site assessment"}</DialogTitle>
+              <DialogTitle className="font-heading text-2xl text-silver">{requestTitle}</DialogTitle>
               <DialogDescription className="text-silver/60">Share a few details and an energy specialist will follow up.</DialogDescription>
             </DialogHeader>
             <form onSubmit={submit} className="mt-3 space-y-4">

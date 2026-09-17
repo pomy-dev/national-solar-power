@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Sun, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const LINKS = [
   { label: "Solutions", href: "#solutions" },
@@ -15,9 +14,20 @@ const LINKS = [
   { label: "FAQ", href: "#faq" },
 ];
 
+/**
+ * @param {{ onOpenRequest: (type: string) => void }} props
+ */
 export default function Navbar({ onOpenRequest }) {
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
+  const [quoteMenuOpen, setQuoteMenuOpen] = useState(false);
+
+  /** @param {string} type */
+  const openRequest = (type) => {
+    setOpen(false);
+    setQuoteMenuOpen(false);
+    onOpenRequest(type);
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -52,10 +62,26 @@ export default function Navbar({ onOpenRequest }) {
             ))}
           </div>
 
-          <div className="hidden lg:block">
-            <Button asChild className="relative overflow-hidden shine-sweep bg-plasma text-obsidian hover:bg-plasma/90 font-semibold uppercase tracking-wide">
-              <a href="#quote">Get Quote</a>
-            </Button>
+          <div className="group relative hidden lg:block">
+            <button type="button" className="relative overflow-hidden shine-sweep bg-plasma px-4 py-2 text-sm text-obsidian hover:bg-plasma/90 font-semibold uppercase tracking-wide">
+              Make Request
+            </button>
+            <div className="invisible absolute right-0 top-full w-56 translate-y-2 border border-white/10 bg-obsidian/95 p-2 opacity-0 shadow-xl transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              {[
+                ["Get quote", "quote"],
+                ["Site assessment", "assessment"],
+                ["Solar installer", "installer"],
+              ].map(([label, type]) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => openRequest(type)}
+                  className="block w-full px-3 py-3 text-left text-xs uppercase tracking-widest text-silver/80 transition-colors hover:bg-white/10 hover:text-plasma"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <button className="lg:hidden text-silver" onClick={() => setOpen(!open)}>
@@ -70,10 +96,31 @@ export default function Navbar({ onOpenRequest }) {
                 {l.label}
               </a>
             ))}
-            <Button asChild className="bg-plasma text-obsidian font-semibold uppercase w-full">
-              <a href="#quote" onClick={() => setOpen(false)}>Get My Energy Plan</a>
-            </Button>
-            <button type="button" onClick={() => { setOpen(false); onOpenRequest("installer"); }} className="text-left text-sm uppercase tracking-widest text-silver/70">Request an installer</button>
+            <button
+              type="button"
+              onClick={() => setQuoteMenuOpen((value) => !value)}
+              className="w-full bg-plasma px-4 py-2 text-left text-sm font-semibold uppercase tracking-wide text-obsidian"
+            >
+              Get Quote
+            </button>
+            {quoteMenuOpen && (
+              <div className="flex flex-col gap-2 border-l border-plasma/40 pl-4">
+                {[
+                  ["Get quote", "quote"],
+                  ["Site assessment", "assessment"],
+                  ["Solar installer", "installer"],
+                ].map(([label, type]) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => openRequest(type)}
+                    className="text-left text-sm uppercase tracking-widest text-silver/70 hover:text-plasma"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </nav>
